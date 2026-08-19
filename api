@@ -1,0 +1,42 @@
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+let appointments = [];
+
+app.get("/", (req, res) => {
+  res.json({
+    message: "Clinic API is working!"
+  });
+});
+
+app.get("/api/appointments", (req, res) => {
+  res.json(appointments);
+});
+
+app.post("/api/appointments", (req, res) => {
+  const appointment = {
+    id: appointments.length + 1,
+    name: req.body.name,
+    phone: req.body.phone,
+    date: req.body.date,
+    time: req.body.time
+  };
+
+  appointments.push(appointment);
+
+  res.status(201).json({
+    message: "Appointment added successfully",
+    appointment
+  });
+});
+
+const PORT = 3000;
+
+app.listen(PORT, () => {
+  console.log(`Clinic API running on port ${PORT}`);
+});
